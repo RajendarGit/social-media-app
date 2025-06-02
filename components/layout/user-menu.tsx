@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { logout } from '@/store/slices/authSlice'
 import { setThemeColor } from '@/store/slices/themeSlice'
 import { setThemeMode } from '@/store/slices/themeSlice'
+import Image from 'next/image'
 
 const UserMenu = ({ onNavigate }: { onNavigate: () => void }) => {
   const dispatch = useDispatch()
@@ -37,11 +38,14 @@ const UserMenu = ({ onNavigate }: { onNavigate: () => void }) => {
   ]
 
   return <DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-      <Avatar className="h-8 w-8">
-        <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name} />
-        <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary" className="relative h-8 w-8 rounded-full">
+          <Avatar className="h-8 w-8">
+            <AvatarImage
+              src={user?.avatar || "/placeholder.svg"}
+              alt={user?.name}
+            />
+            <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
       </Avatar>
     </Button>
   </DropdownMenuTrigger>
