@@ -10,6 +10,7 @@ interface User {
   location?: string
   website?: string
   joinDate: string
+  gender: string
 }
 
 interface AuthState {

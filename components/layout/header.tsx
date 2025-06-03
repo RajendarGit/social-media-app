@@ -1,8 +1,8 @@
 "use client";
 
 import Logo from "./logo";
-import SearchBar from "./search-bar";
 import NavigateButtons from "./navigate-buttons";
+import SearchBar from "./search-bar";
 import UserMenu from "./user-menu";
 
 interface HeaderProps {
@@ -16,10 +16,14 @@ export default function Header({ onNavigate, currentPage }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Logo />
+          <div className="flex items-center space-x-2">
+            <Logo />
+          </div>
 
           {/* Search */}
-          <SearchBar />
+          <div className="flex-1 max-w-md mx-8">
+            <SearchBar placeholder="Search for friends, posts, or pages..." />
+          </div>
 
           {/* Navigation */}
           <div className="flex items-center space-x-4">

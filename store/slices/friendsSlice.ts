@@ -6,6 +6,7 @@ interface Friend {
   avatar?: string
   status: "online" | "offline" | "away"
   mutualFriends: number
+  gender: string
 }
 
 interface FriendsState {
@@ -19,32 +20,36 @@ const initialState: FriendsState = {
     {
       id: "2",
       name: "Sarah Johnson",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "",
       status: "online",
       mutualFriends: 12,
+      gender: "female",
     },
     {
       id: "3",
       name: "Mike Chen",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "",
       status: "away",
       mutualFriends: 8,
+      gender: "male",
     },
   ],
   suggestedFriends: [
     {
       id: "4",
       name: "Emma Wilson",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "",
       status: "offline",
       mutualFriends: 5,
+      gender: "female",
     },
     {
       id: "5",
       name: "David Brown",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "",
       status: "online",
       mutualFriends: 3,
+      gender: "male",
     },
   ],
   friendRequests: [],

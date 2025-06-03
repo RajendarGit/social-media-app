@@ -1,9 +1,11 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar } from "../ui/avatar";
 import { MapPin, LinkIcon } from "lucide-react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
+import { imgPath } from "@/lib/utils";
+import AvatarImageContainer from "./avatar-image-container";
 
 const UserProfileSummary = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -15,11 +17,17 @@ const UserProfileSummary = () => {
           <div className="h-20 bg-gradient-to-r from-blue-500 to-purple-600 relative">
             <div className="absolute -bottom-6 left-4">
               <Avatar className="h-12 w-12 border-4 border-white">
-                <AvatarImage
-                  src={user?.avatar || "/placeholder.svg"}
-                  alt={user?.name}
+                <AvatarImageContainer
+                  avatarSrc={
+                    user?.avatar
+                      ? user?.avatar
+                      : user?.gender === "male"
+                      ? imgPath("boy.webp")
+                      : imgPath("girl.webp")
+                  }
+                  avatarAlt={user?.name || "Social Connect User"}
+                  avatarName={user?.name || "Social Connect User"}
                 />
-                <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
               </Avatar>
             </div>
           </div>

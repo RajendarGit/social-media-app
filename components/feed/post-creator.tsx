@@ -14,6 +14,8 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { ImageIcon, Video, Link, Smile } from "lucide-react"
 import { z } from "zod"
+import AvatarImageContainer from "../layout/avatar-image-container"
+import { imgPath } from "@/lib/utils"
 
 const postSchema = z.object({
   content: z.string().min(1, "Post content cannot be empty").max(500, "Post is too long"),
@@ -77,8 +79,11 @@ export default function PostCreator({ onCreatePost }: PostCreatorProps) {
           {/* User Avatar and Input */}
           <div className="flex space-x-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name} />
-              <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+              <AvatarImageContainer
+                avatarSrc={user?.avatar ? user?.avatar : user?.gender === "male" ? imgPath("boy.webp") : imgPath("girl.webp")}
+                avatarAlt={user?.name || "Social Connect User"}
+                avatarName={user?.name || "Social Connect User"}
+              />
             </Avatar>
             <div className="flex-1">
               <Textarea

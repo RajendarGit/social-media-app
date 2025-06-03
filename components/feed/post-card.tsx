@@ -13,6 +13,9 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Heart, MessageCircle, Share, MoreHorizontal, Send } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import AvatarImageContainer from "../layout/avatar-image-container"
+import { imgPath } from "@/lib/utils"
+import Image from "next/image"
 
 interface PostCardProps {
   post: {
@@ -42,6 +45,7 @@ interface PostCardProps {
 export default function PostCard({ post }: PostCardProps) {
   const dispatch = useDispatch()
   const { user } = useSelector((state: RootState) => state.auth)
+  const { friends, suggestedFriends } = useSelector((state: RootState) => state.friends)
   const [showComments, setShowComments] = useState(false)
   const [commentText, setCommentText] = useState("")
 
@@ -72,14 +76,40 @@ export default function PostCard({ post }: PostCardProps) {
     dispatch(sharePost(post.id))
   }
 
+  const getUserForPost = (userId: string) => {
+    return (
+      friends.find((f) => f.id === userId) ||
+      suggestedFriends.find((f) => f.id === userId)
+    )
+  }
+
+  const userForPost = getUserForPost(post.userId)
+  const avatarSrc = userForPost
+    ? userForPost.avatar
+      ? userForPost.avatar
+      : userForPost.gender === "male"
+        ? imgPath("boy.webp")
+        : imgPath("girl.webp")
+    : "/placeholder.svg"
+
+  const getUserById = (userId: string) => {
+    return (
+      friends.find((f) => f.id === userId) ||
+      suggestedFriends.find((f) => f.id === userId)
+    )
+  }
+
   return (
     <Card className="animate-fade-in">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={post.userAvatar || "/placeholder.svg"} alt={post.userName} />
-              <AvatarFallback>{post.userName.charAt(0)}</AvatarFallback>
+              <AvatarImageContainer
+                avatarSrc={avatarSrc}
+                avatarAlt={userForPost ? userForPost.name : "Social Connect User"}
+                avatarName={userForPost ? userForPost.name : "Social Connect User"}
+              />
             </Avatar>
             <div>
               <p className="font-semibold text-sm">{post.userName}</p>
@@ -112,11 +142,13 @@ export default function PostCard({ post }: PostCardProps) {
           <div className="mb-4">
             <div className={`grid gap-2 ${post.images.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
               {post.images.map((image, index) => (
-                <img
+                <Image
                   key={index}
                   src={image || "/placeholder.svg"}
                   alt={`Post image ${index + 1}`}
                   className="w-full h-64 object-cover rounded-lg cursor-pointer hover:opacity-95 transition-opacity"
+                  width={500}
+                  height={500}
                 />
               ))}
             </div>
@@ -189,8 +221,11 @@ export default function PostCard({ post }: PostCardProps) {
             {/* Add Comment */}
             <form onSubmit={handleComment} className="flex items-center space-x-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name} />
-                <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+                <AvatarImageContainer
+                  avatarSrc={user?.avatar ? user?.avatar : user?.gender === "male" ? imgPath("boy.webp") : imgPath("girl.webp")}
+                  avatarAlt={user?.name || "Social Connect User"}
+                  avatarName={user?.name || "Social Connect User"}
+                />
               </Avatar>
               <div className="flex-1 flex space-x-2">
                 <Input
@@ -206,25 +241,40 @@ export default function PostCard({ post }: PostCardProps) {
             </form>
 
             {/* Comments List */}
-            {post.comments.map((comment) => (
-              <div key={comment.id} className="flex space-x-2">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={comment.userAvatar || "/placeholder.svg"} alt={comment.userName} />
-                  <AvatarFallback>{comment.userName.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
-                    <p className="font-semibold text-sm">{comment.userName}</p>
-                    <p className="text-sm">{comment.content}</p>
-                  </div>
-                  <div className="flex items-center space-x-4 mt-1 text-xs text-gray-500">
-                    <span>{comment.timestamp}</span>
-                    <button className="hover:underline">Like</button>
-                    <button className="hover:underline">Reply</button>
+            {post.comments.map((comment) => {
+              const user = getUserById(comment.userId);
+              const avatarSrc = comment.userAvatar
+                ? comment.userAvatar
+                : user
+                  ? user.avatar
+                    ? user.avatar
+                    : user.gender === "male"
+                      ? imgPath("boy.webp")
+                      : imgPath("girl.webp")
+                  : "/placeholder.svg";
+              return (
+                <div key={comment.id} className="flex space-x-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImageContainer
+                      avatarSrc={avatarSrc}
+                      avatarAlt={comment.userName}
+                      avatarName={comment.userName}
+                    />
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
+                      <p className="font-semibold text-sm">{comment.userName}</p>
+                      <p className="text-sm">{comment.content}</p>
+                    </div>
+                    <div className="flex items-center space-x-4 mt-1 text-xs text-gray-500">
+                      <span>{comment.timestamp}</span>
+                      <button className="hover:underline">Like</button>
+                      <button className="hover:underline">Reply</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </CardContent>
