@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 
 import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
@@ -17,6 +17,7 @@ import AvatarImageContainer from "../layout/avatar-image-container"
 import { imgPath } from "@/lib/utils"
 import Image from "next/image"
 import { getRelativeTime } from "@/lib/utils"
+import { EmbedLink } from "@/lib/healper"
 
 interface PostCardProps {
   post: {
@@ -173,8 +174,8 @@ export default function PostCard({ post }: PostCardProps) {
         )}
 
         {post.link && (
-          <div className="mb-4 p-3 border rounded-lg bg-gray-50 dark:bg-gray-800">
-            <p className="text-sm text-blue-600 hover:underline cursor-pointer">{post.link}</p>
+          <div className="mb-4 bg-gray-50 dark:bg-gray-800">
+            <EmbedLink link={post.link} />
           </div>
         )}
 

@@ -19,6 +19,7 @@ import { imgPath } from "@/lib/utils"
 import Image from "next/image"
 import PostCreatorImage from "./post-creator-image"
 import PostCreatorVideo from "./post-creator-video"
+import PostCreatorLink from "./post-creator-link"
 
 const postSchema = z.object({
   content: z.string().min(1, "Post content cannot be empty").max(500, "Post is too long"),
@@ -125,20 +126,7 @@ export default function PostCreator({ onCreatePost }: PostCreatorProps) {
               <PostCreatorVideo video={video} setVideo={setVideo} handleVideoUpload={handleVideoUpload} />
 
               {/* Link */}
-              <div>
-                <Label htmlFor="link" className="text-sm font-medium">
-                  Add Link
-                </Label>
-                <Input
-                  id="link"
-                  type="url"
-                  placeholder="https://example.com"
-                  value={link}
-                  onChange={(e) => setLink(e.target.value)}
-                  className="mt-1"
-                />
-                {errors.link && <p className="text-sm text-red-500 mt-1">{errors.link[0]}</p>}
-              </div>
+              <PostCreatorLink link={link} setLink={setLink} errors={errors} setErrors={setErrors} />
             </div>
           )}
 
