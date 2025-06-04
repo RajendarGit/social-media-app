@@ -339,8 +339,11 @@ export default function SearchBar({ placeholder = "Search..." }: SearchBarProps)
                             >
                               {result.avatar ? (
                                 <Avatar className="h-8 w-8">
-                                  <AvatarImage src={result.avatar || "/placeholder.svg"} alt={result.title} />
-                                  <AvatarFallback>{result.title.charAt(0)}</AvatarFallback>
+                                  <AvatarImageContainer
+                                    avatarSrc={result.avatar ? result.avatar : user?.gender === "male" ? imgPath("boy.webp") : imgPath("girl.webp")}
+                                    avatarAlt={result.title}
+                                    avatarName={result.title}
+                                  />
                                 </Avatar>
                               ) : (
                                 <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
@@ -391,8 +394,11 @@ export default function SearchBar({ placeholder = "Search..." }: SearchBarProps)
                             >
                               {result.avatar ? (
                                 <Avatar className="h-8 w-8">
-                                  <AvatarImage src={result.avatar || "/placeholder.svg"} alt={result.title} />
-                                  <AvatarFallback>{result.title.charAt(0)}</AvatarFallback>
+                                  <AvatarImageContainer
+                                    avatarSrc={result.avatar ? result.avatar : user?.gender === "male" ? imgPath("boy.webp") : imgPath("girl.webp")}
+                                    avatarAlt={result.title}
+                                    avatarName={result.title}
+                                  />
                                 </Avatar>
                               ) : (
                                 <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">

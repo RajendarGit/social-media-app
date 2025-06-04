@@ -32,40 +32,40 @@ interface PostsState {
 
 const initialState: PostsState = {
   posts: [
-    {
-      id: "1",
-      userId: "2",
-      userName: "Sarah Johnson",
-      userAvatar: "",
-      content:
-        "Just finished an amazing hike in the mountains! The view was absolutely breathtaking. Nature never fails to inspire me. 🏔️✨",
-      images: ["/placeholder.svg?height=400&width=600"],
-      timestamp: "2 hours ago",
-      likes: ["1", "3", "4"],
-      comments: [
-        {
-          id: "1",
-          userId: "3",
-          userName: "Mike Chen",
-          userAvatar: "",
-          content: "Wow, that looks incredible! Which trail did you take?",
-          timestamp: "1 hour ago",
-          likes: ["1"],
-        },
-      ],
-      shares: 2,
-    },
-    {
-      id: "2",
-      userId: "3",
-      userName: "Mike Chen",
-      userAvatar: "",
-      content: "Working on a new project using React and TypeScript. The developer experience keeps getting better! 💻",
-      timestamp: "4 hours ago",
-      likes: ["1", "2"],
-      comments: [],
-      shares: 1,
-    },
+    // {
+    //   id: "1",
+    //   userId: "2",
+    //   userName: "Sarah Johnson",
+    //   userAvatar: "",
+    //   content:
+    //     "Just finished an amazing hike in the mountains! The view was absolutely breathtaking. Nature never fails to inspire me. 🏔️✨",
+    //   images: ["/placeholder.svg?height=400&width=600"],
+    //   timestamp: new Date().toISOString(),
+    //   likes: ["1", "3", "4"],
+    //   comments: [
+    //     {
+    //       id: "1",
+    //       userId: "3",
+    //       userName: "Mike Chen",
+    //       userAvatar: "",
+    //       content: "Wow, that looks incredible! Which trail did you take?",
+    //       timestamp: new Date().toISOString(),
+    //       likes: ["1"],
+    //     },
+    //   ],
+    //   shares: 2,
+    // },
+    // {
+    //   id: "2",
+    //   userId: "3",
+    //   userName: "Mike Chen",
+    //   userAvatar: "",
+    //   content: "Working on a new project using React and TypeScript. The developer experience keeps getting better! 💻",
+    //   timestamp: new Date().toISOString(),
+    //   likes: ["1", "2"],
+    //   comments: [],
+    //   shares: 1,
+    // },
   ],
   loading: false,
 }

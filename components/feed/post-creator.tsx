@@ -8,7 +8,7 @@ import type { RootState } from "@/store/store"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -16,6 +16,9 @@ import { ImageIcon, Video, Link, Smile } from "lucide-react"
 import { z } from "zod"
 import AvatarImageContainer from "../layout/avatar-image-container"
 import { imgPath } from "@/lib/utils"
+import Image from "next/image"
+import PostCreatorImage from "./post-creator-image"
+import PostCreatorVideo from "./post-creator-video"
 
 const postSchema = z.object({
   content: z.string().min(1, "Post content cannot be empty").max(500, "Post is too long"),
@@ -67,8 +70,16 @@ export default function PostCreator({ onCreatePost }: PostCreatorProps) {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files) {
-      const imageUrls = Array.from(files).map(() => "/placeholder.svg?height=300&width=400")
+      const imageUrls = Array.from(files).map(file => URL.createObjectURL(file))
       setImages([...images, ...imageUrls])
+    }
+  }
+
+  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const videoUrl = URL.createObjectURL(file)
+      setVideo(videoUrl)
     }
   }
 
@@ -108,56 +119,10 @@ export default function PostCreator({ onCreatePost }: PostCreatorProps) {
           {showMediaOptions && (
             <div className="space-y-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               {/* Image Upload */}
-              <div>
-                <Label htmlFor="images" className="text-sm font-medium">
-                  Add Photos
-                </Label>
-                <Input
-                  id="images"
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="mt-1"
-                />
-                {images.length > 0 && (
-                  <div className="mt-2 grid grid-cols-2 gap-2">
-                    {images.map((img, index) => (
-                      <div key={index} className="relative">
-                        <img
-                          src={img || "/placeholder.svg"}
-                          alt={`Upload ${index + 1}`}
-                          className="w-full h-24 object-cover rounded"
-                        />
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="sm"
-                          className="absolute top-1 right-1 h-6 w-6 p-0"
-                          onClick={() => setImages(images.filter((_, i) => i !== index))}
-                        >
-                          ×
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <PostCreatorImage images={images} setImages={setImages} handleImageUpload={handleImageUpload} />
 
               {/* Video URL */}
-              <div>
-                <Label htmlFor="video" className="text-sm font-medium">
-                  Video URL
-                </Label>
-                <Input
-                  id="video"
-                  type="url"
-                  placeholder="https://youtube.com/watch?v=..."
-                  value={video}
-                  onChange={(e) => setVideo(e.target.value)}
-                  className="mt-1"
-                />
-              </div>
+              <PostCreatorVideo video={video} setVideo={setVideo} handleVideoUpload={handleVideoUpload} />
 
               {/* Link */}
               <div>

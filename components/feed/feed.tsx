@@ -4,8 +4,8 @@ import type { RootState } from "@/store/store"
 import { addPost } from "@/store/slices/postsSlice"
 import PostCreator from "./post-creator"
 import PostCard from "./post-card"
-import { Card, CardContent } from "@/components/ui/card"
 import { Loader2 } from "lucide-react"
+import NoPostYest from "../layout/no-post-card"
 
 export default function Feed() {
   const dispatch = useDispatch()
@@ -22,7 +22,7 @@ export default function Feed() {
       images: postData.images,
       video: postData.video,
       link: postData.link,
-      timestamp: "Just now",
+      timestamp: new Date().toISOString(),
       likes: [],
       comments: [],
       shares: 0,
@@ -46,12 +46,7 @@ export default function Feed() {
       {/* Posts Feed */}
       <div className="space-y-4">
         {posts.length === 0 ? (
-          <Card>
-            <CardContent className="p-8 text-center">
-              <h3 className="text-lg font-semibold mb-2">No posts yet</h3>
-              <p className="text-gray-600 dark:text-gray-400">Be the first to share something with your friends!</p>
-            </CardContent>
-          </Card>
+          <NoPostYest />
         ) : (
           posts.map((post) => <PostCard key={post.id} post={post} />)
         )}

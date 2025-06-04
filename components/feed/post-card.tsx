@@ -16,6 +16,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import AvatarImageContainer from "../layout/avatar-image-container"
 import { imgPath } from "@/lib/utils"
 import Image from "next/image"
+import { getRelativeTime } from "@/lib/utils"
 
 interface PostCardProps {
   post: {
@@ -48,6 +49,7 @@ export default function PostCard({ post }: PostCardProps) {
   const { friends, suggestedFriends } = useSelector((state: RootState) => state.friends)
   const [showComments, setShowComments] = useState(false)
   const [commentText, setCommentText] = useState("")
+  const [isAutoHeight, setIsAutoHeight] = useState(false)
 
   const isLiked = post.likes.includes(user?.id || "")
 
@@ -113,7 +115,7 @@ export default function PostCard({ post }: PostCardProps) {
             </Avatar>
             <div>
               <p className="font-semibold text-sm">{post.userName}</p>
-              <p className="text-xs text-gray-500">{post.timestamp}</p>
+              <p className="text-xs text-gray-500">{getRelativeTime(post.timestamp)}</p>
             </div>
           </div>
           <DropdownMenu>
@@ -146,7 +148,7 @@ export default function PostCard({ post }: PostCardProps) {
                   key={index}
                   src={image || "/placeholder.svg"}
                   alt={`Post image ${index + 1}`}
-                  className="w-full h-64 object-cover rounded-lg cursor-pointer hover:opacity-95 transition-opacity"
+                  className="w-full h-auto object-cover rounded-lg cursor-pointer hover:opacity-95 transition-opacity"
                   width={500}
                   height={500}
                 />
@@ -157,8 +159,15 @@ export default function PostCard({ post }: PostCardProps) {
 
         {post.video && (
           <div className="mb-4">
-            <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-              <p className="text-gray-500">Video: {post.video}</p>
+            <div className="relative aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+              <video
+                src={post.video}
+                controls
+                className={`w-full ${isAutoHeight ? "h-auto" : "h-full"} object-cover rounded-lg`}
+              />
+              <Button variant="ghost" size="sm" className="absolute top-2 right-2 bg-black/50 text-white" onClick={() => setIsAutoHeight(!isAutoHeight)}>
+                {isAutoHeight ? "Show Aspect Screen" : "Show Full Screen"}
+              </Button>
             </div>
           </div>
         )}
