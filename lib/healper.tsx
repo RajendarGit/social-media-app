@@ -13,11 +13,11 @@ export function EmbedLink({ link }: { link: string }) {
   const embedUrl = getEmbedUrl(link);
   if (embedUrl) {
     return (
-      <div className="w-full aspect-video mb-2">
+      <div className="aspect-video">
         <iframe
           src={embedUrl}
           title="Embedded video"
-          className="w-full h-full border-0"
+          className="w-full h-full border-0 rounded-lg overflow-hidden"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />
@@ -35,7 +35,7 @@ export function EmbedLink({ link }: { link: string }) {
         <Image
           src={thumbnail}
           alt="Video thumbnail"
-          className="rounded w-full mb-2"
+          className="rounded-lg w-full mb-2 overflow-hidden"
           width={400}
           height={400}
         />
